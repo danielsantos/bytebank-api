@@ -1,12 +1,13 @@
 import 'package:bytebank_sqflite/components/centered_message.dart';
 import 'package:bytebank_sqflite/components/progress.dart';
-import 'package:bytebank_sqflite/http/webclient.dart';
-import 'package:bytebank_sqflite/models/contact.dart';
+import 'package:bytebank_sqflite/http/webclients/transaction_webclient.dart';
 import 'package:bytebank_sqflite/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsList extends StatelessWidget {
   //final List<Transaction> transactions = List();
+
+  final TransactionWebCliente _webCliente = new TransactionWebCliente();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class TransactionsList extends StatelessWidget {
         title: Text('Transactions'),
       ),
       body: FutureBuilder<List<Transaction>>(
-        future: Future.delayed(Duration(seconds: 1)).then((value) => findAll()),
+        future: Future.delayed(Duration(seconds: 1)).then((value) => _webCliente.findAll()),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
