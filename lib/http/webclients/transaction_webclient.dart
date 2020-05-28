@@ -1,15 +1,13 @@
 import 'dart:convert';
 
 import 'package:bytebank_sqflite/http/webclient.dart';
-import 'package:bytebank_sqflite/models/contact.dart';
 import 'package:bytebank_sqflite/models/transaction.dart';
 import 'package:http/http.dart';
 
 class TransactionWebCliente {
-
   Future<List<Transaction>> findAll() async {
     final Response response =
-    await client.get(baseUrl).timeout(Duration(seconds: 5));
+        await client.get(baseUrl).timeout(Duration(seconds: 5));
     List<Transaction> transactions = _toTransactions(response);
     return transactions;
   }
@@ -25,17 +23,24 @@ class TransactionWebCliente {
       headers: {'Content-type': 'application/json', 'password': '1000'},
       body: transactionJson,
     );
-    return _toTransaction(response);
+
+    return Transaction.fromJson(jsonDecode(response.body));
   }
 
   List<Transaction> _toTransactions(Response response) {
     final List<dynamic> decodedJson = jsonDecode(response.body);
-    final List<Transaction> transactions = List();
 
-    for (Map<String, dynamic> transactionJson in decodedJson) {
-      final Map<String, dynamic> contactJson = transactionJson['contact'];
+    return decodedJson
+        .map((dynamic json) => Transaction.fromJson(json))
+        .toList();
 
-        // refact
+    // refact
+    //final List<Transaction> transactions = List();
+
+    //for (Map<String, dynamic> transactionJson in decodedJson) {
+
+    // refact
+//      final Map<String, dynamic> contactJson = transactionJson['contact'];
 //      final Transaction transaction = Transaction(
 //        transactionJson['value'],
 //        Contact(
@@ -47,16 +52,17 @@ class TransactionWebCliente {
 //
 //      transactions.add(transaction);
 
-        transactions.add(Transaction.fromJson(transactionJson));
+    //transactions.add(Transaction.fromJson(transactionJson));
 
-    }
-    return transactions;
+    //}
+    //return transactions;
   }
 
-  Transaction _toTransaction(Response response) {
-    Map<String, dynamic> json = jsonDecode(response.body);
+// refact
+//  Transaction _toTransaction(Response response) {
+//    Map<String, dynamic> json = jsonDecode(response.body);
 
-    // refact
+// refact
 //    final Map<String, dynamic> contactJson = json['contact'];
 //
 //    final Transaction transactionCreated = Transaction(
@@ -70,10 +76,10 @@ class TransactionWebCliente {
 //
 //    return transactionCreated;
 
-    return Transaction.fromJson(json);
-  }
+//    return Transaction.fromJson(json);
+//  }
 
-  // refact
+// refact
 //  Map<String, dynamic> _toMap(Transaction transaction) {
 //    final Map<String, dynamic> transactionMap = {
 //      'value': transaction.value,
